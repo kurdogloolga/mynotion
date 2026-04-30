@@ -1,0 +1,7 @@
+flask
+flask-cors
+psycopg2-binary
+PyJWT
+bcrypt
+flask-socketio
+eventlet
