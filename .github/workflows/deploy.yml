@@ -1,0 +1,114 @@
+name: Build, Test and Push Docker Images
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Скачиваем код из репозитория
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Логинимся в Docker Hub
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # 3. Создаём Docker сеть
+      - name: Create Docker network
+        run: docker network create myapp
+
+      # 4. Запускаем PostgreSQL
+      - name: Start PostgreSQL
+        run: |
+          docker run -d \
+            --network myapp \
+            --name db \
+            -e POSTGRES_USER=postgres \
+            -e POSTGRES_PASSWORD=postgres \
+            -e POSTGRES_DB=tododb \
+            -p 5432:5432 \
+            postgres:15
+          sleep 10
+
+      # 5. Собираем образ бэкенда
+      - name: Build backend image
+        run: docker build -t backend ./backend
+
+      # 6. Запускаем бэкенд
+      - name: Start backend
+        run: |
+          docker run -d \
+            --network myapp \
+            --name api \
+            -e DB_HOST=db \
+            -e DB_NAME=tododb \
+            -e DB_USER=postgres \
+            -e DB_PASSWORD=postgres \
+            -e GMAIL_USER=${{ secrets.GMAIL_USER }} \
+            -e GMAIL_PASSWORD=${{ secrets.GMAIL_PASSWORD }} \
+            -p 5000:5000 \
+            backend
+          sleep 5
+
+      # 7. Собираем образ фронтенда
+      - name: Build frontend image
+        run: docker build -t frontend ./frontend
+
+      # 8. Запускаем фронтенд
+      - name: Start frontend
+        run: |
+          docker run -d \
+            --network myapp \
+            --name ui \
+            -p 8080:80 \
+            frontend
+          sleep 3
+
+      # 9. Проверяем что все контейнеры запущены
+      - name: Check containers
+        run: docker ps
+
+      # 10. Тестируем бэкенд через curl
+      - name: Test backend health
+        run: |
+          curl -f http://localhost:5000/auth/login \
+            -X POST \
+            -H "Content-Type: application/json" \
+            -d '{"email":"test@test.com","password":"wrong"}' \
+            -o /dev/null -w "%{http_code}" | grep -q "401"
+          echo "Backend is responding correctly"
+
+      # 11. Тестируем фронтенд
+      - name: Test frontend
+        run: |
+          curl -f http://localhost:8080 -o /dev/null -w "%{http_code}" | grep -q "200"
+          echo "Frontend is responding correctly"
+
+      # 12. Теггируем и пушим образы на Docker Hub
+      - name: Tag and push backend
+        run: |
+          docker tag backend ${{ secrets.DOCKERHUB_USERNAME }}/mynotion-backend:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/mynotion-backend:latest
+
+      - name: Tag and push frontend
+        run: |
+          docker tag frontend ${{ secrets.DOCKERHUB_USERNAME }}/mynotion-frontend:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/mynotion-frontend:latest
+
+      # 13. Останавливаем и удаляем всё
+      - name: Cleanup
+        run: |
+          docker stop api ui db
+          docker rm api ui db
+          docker rmi backend frontend
+          docker network rm myapp
+          echo "Cleanup done"

@@ -117,7 +117,7 @@
   .note-card { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 16px; cursor: pointer; transition: box-shadow 0.15s; position: relative; }
   .note-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
   .note-title { font-weight: 600; font-size: 14px; margin-bottom: 6px; }
-  .note-preview { font-size: 13px; color: var(--text-muted); overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
+  .note-preview { font-size: 13px; color: var(--text-muted); overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; line-clamp: 3; }
   .note-date { font-size: 11px; color: var(--text-muted); margin-top: 10px; }
   .note-del { position: absolute; top: 8px; right: 8px; opacity: 0; }
   .note-card:hover .note-del { opacity: 1; }
@@ -181,23 +181,23 @@
 <div class="auth-wrap" id="auth-wrap">
   <div class="auth-card">
     <div class="auth-logo">📓 MyNotion</div>
-    <div class="auth-sub">Your personal workspace</div>
+    <div class="auth-sub">Твой личный рабочий стол</div>
     <div class="auth-tabs">
-      <div class="auth-tab active" onclick="switchAuthTab('login')">Sign In</div>
-      <div class="auth-tab" onclick="switchAuthTab('register')">Register</div>
+      <div class="auth-tab active" onclick="switchAuthTab('login')">Войти</div>
+      <div class="auth-tab" onclick="switchAuthTab('register')">Регистрация</div>
     </div>
     <!-- Login -->
     <div class="auth-form active" id="form-login">
       <div class="field-group"><div class="field-label">Email</div><input id="l-email" type="email" placeholder="you@gmail.com"/></div>
-      <div class="field-group"><div class="field-label">Password</div><input id="l-pass" type="password" placeholder="••••••••"/></div>
-      <button class="btn btn-primary btn-full" onclick="doLogin()">Sign In</button>
+      <div class="field-group"><div class="field-label">Пароль</div><input id="l-pass" type="password" placeholder="••••••••"/></div>
+      <button class="btn btn-primary btn-full" onclick="doLogin()">Войти</button>
     </div>
     <!-- Register -->
     <div class="auth-form" id="form-register">
-      <div class="field-group"><div class="field-label">Name</div><input id="r-name" placeholder="Your name"/></div>
+      <div class="field-group"><div class="field-label">Имя</div><input id="r-name" placeholder="Твоё имя"/></div>
       <div class="field-group"><div class="field-label">Email</div><input id="r-email" type="email" placeholder="you@gmail.com"/></div>
-      <div class="field-group"><div class="field-label">Password</div><input id="r-pass" type="password" placeholder="••••••••"/></div>
-      <button class="btn btn-primary btn-full" onclick="doRegister()">Create account</button>
+      <div class="field-group"><div class="field-label">Пароль</div><input id="r-pass" type="password" placeholder="••••••••"/></div>
+      <button class="btn btn-primary btn-full" onclick="doRegister()">Создать аккаунт</button>
     </div>
   </div>
 </div>
@@ -212,18 +212,19 @@
       <div class="user-info" id="sidebar-user">—</div>
     </div>
     <div class="sidebar-nav">
-      <div class="nav-section">Main</div>
-      <div class="nav-item active" onclick="showPage('dashboard', this)"><span class="nav-icon">🏠</span> Dashboard</div>
-      <div class="nav-item" onclick="showPage('tasks', this)"><span class="nav-icon">✅</span> Tasks</div>
-      <div class="nav-item" onclick="showPage('notes', this)"><span class="nav-icon">📝</span> Notes</div>
-      <div class="nav-section">Mail</div>
-      <div class="nav-item" onclick="showPage('email', this)"><span class="nav-icon">✉️</span> Mail</div>
-      <div class="nav-section">Categories</div>
+      <div class="nav-section">Главное</div>
+      <div class="nav-item active" onclick="showPage('dashboard', this)"><span class="nav-icon">🏠</span> Дашборд</div>
+      <div class="nav-item" onclick="showPage('tasks', this)"><span class="nav-icon">✅</span> Задачи</div>
+      <div class="nav-item" onclick="showPage('notes', this)"><span class="nav-icon">📝</span> Заметки</div>
+      <div class="nav-section">Почта</div>
+      <div class="nav-item" onclick="showPage('email', this)"><span class="nav-icon">✉️</span> Почта</div>
+      <div class="nav-section">Категории</div>
       <div id="cat-list-sidebar"></div>
-      <div class="nav-item" onclick="openModal('modal-cat')"><span class="nav-icon">➕</span> Add</div>
+      <div class="nav-item" onclick="openModal('modal-cat')"><span class="nav-icon">➕</span> Добавить</div>
     </div>
+    <div style="padding: 8px 16px; font-size: 12px;"><span id="ws-status">⚪ Connecting...</span></div>
     <div class="sidebar-footer">
-      <button class="logout-btn" onclick="doLogout()">Logout</button>
+      <button class="logout-btn" onclick="doLogout()">Выйти</button>
     </div>
   </div>
 
@@ -232,38 +233,38 @@
 
     <!-- Dashboard -->
     <div class="page active" id="page-dashboard">
-      <div class="page-title" id="greeting">Good day 👋</div>
+      <div class="page-title" id="greeting">Добрый день 👋</div>
       <div class="stats">
-        <div class="stat-card"><div class="stat-num" id="stat-total">0</div><div class="stat-label">Total tasks</div></div>
-        <div class="stat-card"><div class="stat-num" id="stat-done">0</div><div class="stat-label">Completed</div></div>
-        <div class="stat-card"><div class="stat-num" id="stat-today">0</div><div class="stat-label">Due today</div></div>
-        <div class="stat-card"><div class="stat-num" id="stat-notes">0</div><div class="stat-label">Notes</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-total">0</div><div class="stat-label">Всего задач</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-done">0</div><div class="stat-label">Выполнено</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-today">0</div><div class="stat-label">Дедлайн сегодня</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-notes">0</div><div class="stat-label">Заметок</div></div>
       </div>
-      <h3 style="margin-bottom:12px; font-size:16px;">Recent tasks</h3>
+      <h3 style="margin-bottom:12px; font-size:16px;">Последние задачи</h3>
       <div id="dash-tasks" class="task-list"></div>
     </div>
 
     <!-- Tasks -->
     <div class="page" id="page-tasks">
-      <div class="page-title">Tasks</div>
+      <div class="page-title">Задачи</div>
       <div class="toolbar">
         <div class="toolbar-left">
           <select class="filter-select" id="filter-priority" onchange="loadTasks()">
-            <option value="">All priorities</option>
-            <option value="high">🔴 High</option>
-            <option value="medium">🟡 Medium</option>
-            <option value="low">🟢 Low</option>
+            <option value="">Все приоритеты</option>
+            <option value="high">🔴 Высокий</option>
+            <option value="medium">🟡 Средний</option>
+            <option value="low">🟢 Низкий</option>
           </select>
           <select class="filter-select" id="filter-cat" onchange="loadTasks()">
-            <option value="">All categories</option>
+            <option value="">Все категории</option>
           </select>
           <select class="filter-select" id="filter-done" onchange="loadTasks()">
-            <option value="">All statuses</option>
-            <option value="false">In progress</option>
-            <option value="true">Done</option>
+            <option value="">Все статусы</option>
+            <option value="false">В процессе</option>
+            <option value="true">Выполнено</option>
           </select>
         </div>
-        <button class="btn btn-primary" onclick="openTaskModal()">+ New task</button>
+        <button class="btn btn-primary" onclick="openTaskModal()">+ Новая задача</button>
       </div>
       <div class="task-list" id="task-list"></div>
     </div>
@@ -272,47 +273,46 @@
     <div class="page" id="page-notes">
       <div id="notes-list-view">
         <div class="toolbar">
-          <div class="page-title" style="margin:0">Notes</div>
-          <button class="btn btn-primary" onclick="newNote()">+ New note</button>
+          <div class="page-title" style="margin:0">Заметки</div>
+          <button class="btn btn-primary" onclick="newNote()">+ Новая заметка</button>
         </div>
         <div class="notes-grid" id="notes-grid" style="margin-top:20px"></div>
       </div>
       <div class="note-editor" id="note-editor">
         <div style="display:flex; gap:8px; margin-bottom:20px;">
-          <button class="btn btn-ghost" onclick="closeNoteEditor()">← Back</button>
-          <button class="btn btn-primary" onclick="saveNote()">Save</button>
+          <button class="btn btn-ghost" onclick="closeNoteEditor()">← Назад</button>
+          <button class="btn btn-primary" onclick="saveNote()">Сохранить</button>
         </div>
-        <input id="note-editor-title" placeholder="Note title…"/>
-        <textarea id="note-editor-content" placeholder="Start typing…"></textarea>
+        <input id="note-editor-title" placeholder="Заголовок заметки…"/>
+        <textarea id="note-editor-content" placeholder="Начни писать…"></textarea>
       </div>
     </div>
 
     <!-- Email unified -->
     <div class="page" id="page-email">
-      <div class="page-title">Mail</div>
+      <div class="page-title">Почта</div>
       <div class="email-tabs">
-        <div class="email-tab active" onclick="switchEmailTab('send', this)">📤 New email</div>
-        <div class="email-tab" onclick="switchEmailTab('inbox', this)">📥 Inbox</div>
+        <div class="email-tab active" onclick="switchEmailTab('send', this)">📤 Новое письмо</div>
+        <div class="email-tab" onclick="switchEmailTab('inbox', this)">📥 Входящие</div>
       </div>
 
       <!-- Send tab -->
       <div id="email-tab-send" class="email-tab-content active">
         <div style="max-width:540px; display:flex; flex-direction:column; gap:14px; margin-top:20px;">
-          <div class="field-group"><div class="field-label">To</div><input id="e-to" placeholder="email@example.com"/></div>
-          <div class="field-group"><div class="field-label">Subject</div><input id="e-sub" placeholder="Email subject"/></div>
-          <div class="field-group"><div class="field-label">Message</div><textarea id="e-body" rows="6" placeholder="Message text…"></textarea></div>
-          <button class="btn btn-primary" style="width:fit-content" onclick="sendEmail()">📨 Send</button>
+          <div class="field-group"><div class="field-label">Кому</div><input id="e-to" placeholder="email@example.com"/></div>
+          <div class="field-group"><div class="field-label">Тема</div><input id="e-sub" placeholder="Тема письма"/></div>
+          <div class="field-group"><div class="field-label">Текст</div><textarea id="e-body" rows="6" placeholder="Текст письма…"></textarea></div>
+          <button class="btn btn-primary" style="width:fit-content" onclick="sendEmail()">📨 Отправить</button>
         </div>
       </div>
 
       <!-- Inbox tab -->
       <div id="email-tab-inbox" class="email-tab-content" style="display:none;">
-        <div style="display:flex; gap:10px; margin:20px 0 16px; align-items:center; flex-wrap:wrap;">
-          <button class="btn btn-ghost" onclick="loadInbox('imap')">🔄 Load IMAP</button>
-          <button class="btn btn-ghost" onclick="loadInbox('pop3')">🔄 Load POP3</button>
-          <span style="font-size:12px; color:var(--text-muted)">IMAP — modern protocol; POP3 — outdated, may not be supported by provider</span>
+        <div style="display:flex; gap:10px; margin:20px 0 16px;">
+          <button class="btn btn-ghost" onclick="loadInbox('imap')">🔄 Загрузить IMAP</button>
+          <button class="btn btn-ghost" onclick="loadInbox('pop3')">🔄 Загрузить POP3</button>
         </div>
-        <div id="inbox-list"><p style="color:var(--text-muted)">Click button to load emails</p></div>
+        <div id="inbox-list"><p style="color:var(--text-muted)">Нажмите кнопку для загрузки писем</p></div>
       </div>
     </div>
 
@@ -323,31 +323,31 @@
 <div class="modal-overlay" id="modal-task">
   <div class="modal">
     <div class="modal-header">
-      <div class="modal-title" id="task-modal-title">New task</div>
+      <div class="modal-title" id="task-modal-title">Новая задача</div>
       <button class="modal-close" onclick="closeModal('modal-task')">✕</button>
     </div>
     <div class="modal-body">
-      <div class="field-group"><div class="field-label">Title *</div><input id="t-title" placeholder="Task title"/></div>
-      <div class="field-group"><div class="field-label">Description</div><textarea id="t-desc" rows="3" placeholder="Description…"></textarea></div>
+      <div class="field-group"><div class="field-label">Название *</div><input id="t-title" placeholder="Название задачи"/></div>
+      <div class="field-group"><div class="field-label">Описание</div><textarea id="t-desc" rows="3" placeholder="Описание…"></textarea></div>
       <div class="form-row">
         <div class="field-group">
-          <div class="field-label">Priority</div>
+          <div class="field-label">Приоритет</div>
           <select id="t-priority">
-            <option value="high">🔴 High</option>
-            <option value="medium" selected>🟡 Medium</option>
-            <option value="low">🟢 Low</option>
+            <option value="high">🔴 Высокий</option>
+            <option value="medium" selected>🟡 Средний</option>
+            <option value="low">🟢 Низкий</option>
           </select>
         </div>
         <div class="field-group">
-          <div class="field-label">Category</div>
-          <select id="t-cat"><option value="">No category</option></select>
+          <div class="field-label">Категория</div>
+          <select id="t-cat"><option value="">Без категории</option></select>
         </div>
       </div>
-      <div class="field-group"><div class="field-label">Deadline</div><input type="date" id="t-deadline"/></div>
+      <div class="field-group"><div class="field-label">Дедлайн</div><input type="date" id="t-deadline"/></div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('modal-task')">Cancel</button>
-      <button class="btn btn-primary" onclick="saveTask()">Save</button>
+      <button class="btn btn-ghost" onclick="closeModal('modal-task')">Отмена</button>
+      <button class="btn btn-primary" onclick="saveTask()">Сохранить</button>
     </div>
   </div>
 </div>
@@ -356,16 +356,16 @@
 <div class="modal-overlay" id="modal-cat">
   <div class="modal" style="width:360px">
     <div class="modal-header">
-      <div class="modal-title">New category</div>
+      <div class="modal-title">Новая категория</div>
       <button class="modal-close" onclick="closeModal('modal-cat')">✕</button>
     </div>
     <div class="modal-body">
-      <div class="field-group"><div class="field-label">Title</div><input id="c-name" placeholder="Work, Study…"/></div>
-      <div class="field-group"><div class="field-label">Color</div><input type="color" id="c-color" value="#6366f1" style="height:38px; cursor:pointer;"/></div>
+      <div class="field-group"><div class="field-label">Название</div><input id="c-name" placeholder="Работа, Учёба…"/></div>
+      <div class="field-group"><div class="field-label">Цвет</div><input type="color" id="c-color" value="#6366f1" style="height:38px; cursor:pointer;"/></div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('modal-cat')">Cancel</button>
-      <button class="btn btn-primary" onclick="saveCategory()">Create</button>
+      <button class="btn btn-ghost" onclick="closeModal('modal-cat')">Отмена</button>
+      <button class="btn btn-primary" onclick="saveCategory()">Создать</button>
     </div>
   </div>
 </div>
@@ -374,15 +374,15 @@
 <div class="modal-overlay" id="modal-send-task">
   <div class="modal" style="width:420px">
     <div class="modal-header">
-      <div class="modal-title">Send task via email</div>
+      <div class="modal-title">Отправить задачу на email</div>
       <button class="modal-close" onclick="closeModal('modal-send-task')">✕</button>
     </div>
     <div class="modal-body">
-      <div class="field-group"><div class="field-label">To</div><input id="st-to" placeholder="email@example.com"/></div>
+      <div class="field-group"><div class="field-label">Кому</div><input id="st-to" placeholder="email@example.com"/></div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('modal-send-task')">Cancel</button>
-      <button class="btn btn-primary" onclick="sendTaskEmail()">Send</button>
+      <button class="btn btn-ghost" onclick="closeModal('modal-send-task')">Отмена</button>
+      <button class="btn btn-primary" onclick="sendTaskEmail()">Отправить</button>
     </div>
   </div>
 </div>
@@ -454,8 +454,9 @@ function setAuth(t, u) {
   document.getElementById("sidebar-user").textContent = u;
   const h = new Date().getHours();
   document.getElementById("greeting").textContent =
-    (h<12?"Good morning":h<18?"Good afternoon":"Good evening") + ` ${u} 👋`;
+    (h<12?"Доброе утро":h<18?"Добрый день":"Добрый вечер") + ` ${u} 👋`;
   loadAll();
+  setTimeout(connectWebSocket, 500);
 }
 
 function doLogout() {
@@ -496,7 +497,7 @@ async function loadDashboard() {
     const recent = tasks.slice(0,5);
     document.getElementById("dash-tasks").innerHTML = recent.length
       ? recent.map(t => taskCardHTML(t)).join("")
-      : `<div class="empty"><div class="empty-icon">✅</div><div class="empty-text">No tasks</div></div>`;
+      : `<div class="empty"><div class="empty-icon">✅</div><div class="empty-text">Нет задач</div></div>`;
   } catch(e) {}
 }
 
@@ -520,19 +521,19 @@ function renderCatSidebar() {
 
 function renderCatSelects() {
   const opts = categories.map(c => `<option value="${c.id}">${h(c.name)}</option>`).join("");
-  document.getElementById("t-cat").innerHTML = `<option value="">No category</option>` + opts;
-  document.getElementById("filter-cat").innerHTML = `<option value="">All categories</option>` + opts;
+  document.getElementById("t-cat").innerHTML = `<option value="">Без категории</option>` + opts;
+  document.getElementById("filter-cat").innerHTML = `<option value="">Все категории</option>` + opts;
 }
 
 async function saveCategory() {
   const name = document.getElementById("c-name").value.trim();
   const color = document.getElementById("c-color").value;
-  if (!name) { toast("Enter title", false); return; }
+  if (!name) { toast("Введи название", false); return; }
   try {
     await api("POST", "/categories", {name, color});
     closeModal("modal-cat");
     document.getElementById("c-name").value = "";
-    toast("Category created");
+    toast("Категория создана");
     await loadCategories();
   } catch(e) { toast(e.message, false); }
 }
@@ -561,11 +562,11 @@ function renderTasks() {
   const el = document.getElementById("task-list");
   el.innerHTML = tasks.length
     ? tasks.map(t => taskCardHTML(t)).join("")
-    : `<div class="empty"><div class="empty-icon">🎉</div><div class="empty-text">No tasks</div></div>`;
+    : `<div class="empty"><div class="empty-icon">🎉</div><div class="empty-text">Нет задач</div></div>`;
 }
 
 function taskCardHTML(t) {
-  const prioLabel = {high:"🔴 High", medium:"🟡 Medium", low:"🟢 Low"}[t.priority] || "";
+  const prioLabel = {high:"🔴 Высокий", medium:"🟡 Средний", low:"🟢 Низкий"}[t.priority] || "";
   const deadline  = t.deadline ? `📅 ${t.deadline}` : "";
   const cat = t.category_name ? `<span class="tag" style="background:${t.category_color}22; color:${t.category_color}">${h(t.category_name)}</span>` : "";
   return `
@@ -592,7 +593,7 @@ function taskCardHTML(t) {
 
 function openTaskModal(id) {
   editTaskId = id || null;
-  document.getElementById("task-modal-title").textContent = id ? "Edit task" : "New task";
+  document.getElementById("task-modal-title").textContent = id ? "Редактировать задачу" : "Новая задача";
   if (id) {
     const t = allTasks.find(x => x.id === id);
     if (t) {
@@ -614,7 +615,7 @@ function openTaskModal(id) {
 
 async function saveTask() {
   const title = document.getElementById("t-title").value.trim();
-  if (!title) { toast("Enter title", false); return; }
+  if (!title) { toast("Введи название", false); return; }
   const body = {
     title,
     description: document.getElementById("t-desc").value,
@@ -628,10 +629,10 @@ async function saveTask() {
       const t = allTasks.find(x => x.id === editTaskId);
       body.done = t ? t.done : false;
       await api("PUT", `/tasks/${editTaskId}`, body);
-      toast("Task updated");
+      toast("Задача обновлена");
     } else {
       await api("POST", "/tasks", body);
-      toast("Task created");
+      toast("Задача создана");
     }
     closeModal("modal-task");
     await loadTasks();
@@ -643,22 +644,22 @@ async function toggleTask(id, done) {
   if (!done) {
     try {
       await api("POST", `/tasks/${id}/complete`);
-      toast("✅ Done! Notification sent to email");
-    } catch(e) { toast("Done"); }
+      toast("✅ Выполнено! Уведомление отправлено на почту");
+    } catch(e) { toast("Выполнено"); }
   } else {
     const t = allTasks.find(x => x.id === id);
     if (t) await api("PUT", `/tasks/${id}`, {...t, done: false});
-    toast("Marked as incomplete");
+    toast("Отмечено как не выполненное");
   }
   await loadTasks();
   loadDashboard();
 }
 
 async function deleteTask(id) {
-  if (!confirm("Delete task?")) return;
+  if (!confirm("Удалить задачу?")) return;
   try {
     await api("DELETE", `/tasks/${id}`);
-    toast("Deleted");
+    toast("Удалено");
     await loadTasks();
     loadDashboard();
   } catch(e) { toast(e.message, false); }
@@ -674,10 +675,10 @@ async function loadNotes() {
           <div class="note-card" onclick="openNote(${n.id})">
             <button class="btn btn-danger note-del" style="padding:4px 8px; font-size:12px" onclick="event.stopPropagation(); deleteNote(${n.id})">🗑</button>
             <div class="note-title">${h(n.title)}</div>
-            <div class="note-preview">${h(n.content || "Empty note")}</div>
-            <div class="note-date">${new Date(n.updated_at).toLocaleDateString("en")}</div>
+            <div class="note-preview">${h(n.content || "Пустая заметка")}</div>
+            <div class="note-date">${new Date(n.updated_at).toLocaleDateString("ru")}</div>
           </div>`).join("")
-      : `<div class="empty" style="grid-column:1/-1"><div class="empty-icon">📝</div><div class="empty-text">No notes</div></div>`;
+      : `<div class="empty" style="grid-column:1/-1"><div class="empty-icon">📝</div><div class="empty-text">Нет заметок</div></div>`;
   } catch(e) {}
 }
 
@@ -703,7 +704,7 @@ async function openNote(id) {
 }
 
 async function saveNote() {
-  const title   = document.getElementById("note-editor-title").value.trim() || "Untitled";
+  const title   = document.getElementById("note-editor-title").value.trim() || "Без названия";
   const content = document.getElementById("note-editor-content").value;
   try {
     if (editNoteId) {
@@ -711,16 +712,16 @@ async function saveNote() {
     } else {
       await api("POST", "/notes", {title, content});
     }
-    toast("Saved");
+    toast("Сохранено");
     closeNoteEditor();
   } catch(e) { toast(e.message, false); }
 }
 
 async function deleteNote(id) {
-  if (!confirm("Delete note?")) return;
+  if (!confirm("Удалить заметку?")) return;
   try {
     await api("DELETE", `/notes/${id}`);
-    toast("Deleted");
+    toast("Удалено");
     loadNotes();
   } catch(e) {}
 }
@@ -746,7 +747,7 @@ async function sendEmail() {
       subject: document.getElementById("e-sub").value,
       body:    document.getElementById("e-body").value
     });
-    toast("Email sent!");
+    toast("Письмо отправлено!");
     document.getElementById("e-to").value = "";
     document.getElementById("e-sub").value = "";
     document.getElementById("e-body").value = "";
@@ -755,12 +756,12 @@ async function sendEmail() {
 
 async function loadInbox(protocol) {
   const el = document.getElementById("inbox-list");
-  el.innerHTML = "<p style='color:var(--text-muted)'>Loading…</p>";
+  el.innerHTML = "<p style='color:var(--text-muted)'>Загрузка…</p>";
   try {
     const data = await api("GET", `/email/${protocol}`);
     el.innerHTML = data.length
-      ? data.map(m => `<div class="mail-item"><div class="mail-subject">${protocol === "imap" ? "📧" : "📬"} ${h(m.subject)}</div><div class="mail-meta">From: ${h(m.from)} · ${h(m.date)}</div></div>`).join("")
-      : "<p style='color:var(--text-muted)'>No emails</p>";
+      ? data.map(m => `<div class="mail-item"><div class="mail-subject">${protocol === "imap" ? "📧" : "📬"} ${h(m.subject)}</div><div class="mail-meta">От: ${h(m.from)} · ${h(m.date)}</div></div>`).join("")
+      : "<p style='color:var(--text-muted)'>Нет писем</p>";
   } catch(e) { el.innerHTML = `<p style='color:var(--red)'>${e.message}</p>`; }
 }
 
@@ -772,14 +773,14 @@ function openSendTaskModal(id, title, desc) {
 
 async function sendTaskEmail() {
   const to = document.getElementById("st-to").value.trim();
-  if (!to) { toast("Enter email", false); return; }
+  if (!to) { toast("Введи email", false); return; }
   try {
     await api("POST", "/email/send", {
       to,
-      subject: `Task: ${sendTaskData.title}`,
-      body: `Task: ${sendTaskData.title}\n\nDescription: ${sendTaskData.desc}`
+      subject: `Задача: ${sendTaskData.title}`,
+      body: `Задача: ${sendTaskData.title}\n\nОписание: ${sendTaskData.desc}`
     });
-    toast("Email sent!");
+    toast("Письмо отправлено!");
     closeModal("modal-send-task");
   } catch(e) { toast(e.message, false); }
 }
@@ -798,12 +799,76 @@ if (token) {
   app.style.display = "flex";
   document.getElementById("sidebar-user").textContent = username;
   const hr = new Date().getHours();
-  const greet = hr < 12 ? "Good morning" : hr < 18 ? "Good afternoon" : "Good evening";
+  const greet = hr < 12 ? "Доброе утро" : hr < 18 ? "Добрый день" : "Добрый вечер";
   document.getElementById("greeting").textContent = `${greet}, ${username} 👋`;
   loadAll();
+  setTimeout(connectWebSocket, 500);
 } else {
   document.getElementById("auth-wrap").style.display = "flex";
 }
+
+// ── WEBSOCKET ──────────────────────────────────────────────────────
+const WS_URL = "http://localhost:5000";
+let socket = null;
+
+// Индикатор статуса WebSocket в сайдбаре
+function updateWsStatus(connected) {
+  const el = document.getElementById("ws-status");
+  if (el) {
+    el.textContent = connected ? "🟢 Online" : "🔴 Offline";
+    el.style.color = connected ? "var(--green)" : "var(--red)";
+  }
+}
+
+function connectWebSocket() {
+  // Подключаем библиотеку socket.io
+  if (typeof io === "undefined") return;
+
+  socket = io(WS_URL, { transports: ["websocket", "polling"] });
+
+  socket.on("connect", () => {
+    console.log("WebSocket connected:", socket.id);
+    updateWsStatus(true);
+    toast("🔌 WebSocket подключён", true);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("WebSocket disconnected");
+    updateWsStatus(false);
+  });
+
+  // Когда другой пользователь создал задачу — обновляем список
+  socket.on("task_created", (task) => {
+    console.log("New task via WebSocket:", task);
+    toast(`📋 Новая задача: ${task.title}`, true);
+    loadTasks();
+    loadDashboard();
+  });
+
+  // Когда другой пользователь обновил задачу
+  socket.on("task_updated", (data) => {
+    console.log("Task updated via WebSocket:", data);
+    toast(`✏️ Задача обновлена: ${data.title}`, true);
+    loadTasks();
+    loadDashboard();
+  });
+
+  // Когда другой пользователь удалил задачу
+  socket.on("task_deleted", (data) => {
+    console.log("Task deleted via WebSocket:", data.id);
+    toast(`🗑 Задача удалена`, true);
+    loadTasks();
+    loadDashboard();
+  });
+}
+
+// Запускаем WebSocket после логина
+const _origSetAuth = setAuth;
+// Переопределяем setAuth чтобы подключать WebSocket после входа
+window.addEventListener("load", () => {
+  if (token) {
+    setTimeout(connectWebSocket, 500);
+  }
+});
+
 </script>
-</body>
-</html>
