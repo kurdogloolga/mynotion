@@ -63,8 +63,12 @@ jobs:
         run: sleep 15
 
       - name: Test backend health
-        run: curl -f http://localhost:5000/auth/login -X POST -H "Content-Type: application/json" -d '{"email":"test@test.com","password":"wrong"}' || true
-
+        run: |
+          curl -f http://localhost:5000/auth/login \
+            -X POST \
+            -H "Content-Type: application/json" \
+            -d "{\"email\":\"test@test.com\",\"password\":\"wrong\"}" || true
+            
       - name: Test frontend health
         run: curl -f http://localhost:8080
 
